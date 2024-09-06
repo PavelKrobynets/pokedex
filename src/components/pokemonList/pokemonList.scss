@@ -1,0 +1,33 @@
+.pokemon-list {
+  background-color: #ffffff99;
+  border-radius: 25px;
+
+	h2{
+		font-size: 36px;
+	}
+
+  &__tabs {
+    width: 100%;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    gap: 25px;
+    padding: 0;
+    margin: 0px;
+  }
+  &__tab {
+    background-color: #70a9a1;
+    list-style-type: none;
+		border-radius: 15px;
+
+    img {
+      width: 100%;
+    }
+
+		&-name{
+			color: aliceblue;
+			font-size: 26px;
+			margin-top: -10px;
+		}
+  }
+}

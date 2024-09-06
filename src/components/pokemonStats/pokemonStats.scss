@@ -1,0 +1,41 @@
+.pokemon-stats{
+	background-color: #70a9a1;
+	padding: 10px 30px;
+	border-radius: 15px;
+	color: aliceblue;
+
+		&__name{
+			font-size: 30px;
+			margin-top: -20px;
+		}
+
+		&__info{
+			margin-top: -30px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			gap: 30px;
+			font-weight: 600;
+
+			dd{
+				margin-left: -25px;
+			}
+		}
+
+		&__button{
+			width: 70%;
+			margin: 0 auto;
+			height: 35px;
+			background-color: #d6ec5e;
+			border: none;
+			border-radius: 0.3em;
+			font-size: 14px;
+			cursor: pointer;
+			font-weight: 600;
+		}
+}
+
+// <div className="pokemon-stats__info">
+//           <p className="pokemon-stats__info-type">Type: Grass/Poison</p>
+//           <p className="pokemon-stats__info-weight">Weight:69</p>
+//         </div>
