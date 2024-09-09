@@ -9,8 +9,8 @@ export default function PokemonStats() {
       <dl className="pokemon-stats__info">
         <dt>Type:</dt>
         <dd>Grass/Poison</dd>
-        <dt>Weight:</dt>
-        <dd>69</dd>
+        <dt>Forms:</dt>
+        <dd>3</dd>
       </dl>
       <button
         className="pokemon-stats__button"

@@ -14,12 +14,12 @@ export default function PokemonFilter() {
         </button>
       </div>
 			<ul className="pokemon-filter__tabs">
-        <li className="pokemon-filter__tabs-item">Fire</li>
-        <li className="pokemon-filter__tabs-item">Water</li>
-        <li className="pokemon-filter__tabs-item">Earth</li>
-        <li className="pokemon-filter__tabs-item">Wind</li>
-        <li className="pokemon-filter__tabs-item">Dark</li>
-        <li className="pokemon-filter__tabs-item">Light</li>
+        <li className="pokemon-filter__tabs-item_fire">Fire</li>
+        <li className="pokemon-filter__tabs-item_water">Water</li>
+        <li className="pokemon-filter__tabs-item_ground">Ground</li>
+        <li className="pokemon-filter__tabs-item_flying">Flying</li>
+        <li className="pokemon-filter__tabs-item_dark">Dark</li>
+        <li className="pokemon-filter__tabs-item_electric">Electric</li>
       </ul>
 		</div>
 	);
