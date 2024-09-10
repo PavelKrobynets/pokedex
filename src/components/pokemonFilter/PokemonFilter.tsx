@@ -10,12 +10,17 @@ import "./pokemonFilter.scss";
 export default function PokemonFilter() {
   const request = useRequests();
   const types = useSelector((state: RootState) => state.pokemon.types);
-	const searchInput = useRef("");
+	const searchInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     request.fetchPokemonTypes();
     // eslint-disable-next-line
   }, []);
+
+	const handleSearch = () => {
+		const searchValue = searchInput.current?.value;
+		console.log(searchValue);
+	}
 
   return (
     <div className="pokemon-filter">
@@ -25,7 +30,7 @@ export default function PokemonFilter() {
           className="pokemon-filter__search-button"
           aria-label="Search Pokémon"
 					onClick={
-						searchInput.current
+						handleSearch
 					}
         >
           <FaMagnifyingGlass />
@@ -33,7 +38,7 @@ export default function PokemonFilter() {
       </div>
       <ul className="pokemon-filter__tabs">
         {types.map((type: IPokemonType) => {
-          return <PokemonTypes key={type.name} name={type.name} />;
+          return <PokemonTypes key={type.name} name={type.name} char={false}/>;
         })}
       </ul>
     </div>

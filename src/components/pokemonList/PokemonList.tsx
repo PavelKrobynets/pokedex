@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRequests } from "../../hooks/useRequests";
 import { RootState } from "../../store/store";
@@ -9,6 +9,7 @@ import "./pokemonList.scss";
 
 export default function PokemonList() {
   const request = useRequests();
+  const [offset, setOffset] = useState(0);
   const { pokemons, pokemonLoadingStatus } = useSelector(
     (state: RootState) => ({
       pokemons: state.pokemon.pokemons as IPokemonStats[],
@@ -17,7 +18,7 @@ export default function PokemonList() {
   );
 
   useEffect(() => {
-    request.fetchPokemons();
+    request.fetchPokemons(offset);
     // eslint-disable-next-line
   }, []);
 
@@ -46,13 +47,29 @@ export default function PokemonList() {
               <h3 className="pokemon-list__tab-name">{pokemon.name}</h3>
               <ul className="pokemon-list__tab-types">
                 {pokemon.types.map((item: TPokemonTypes) => {
-                  return <PokemonTypes key={item.type.name} name={item.type.name} />;
+                  return (
+                    <PokemonTypes
+                      key={item.type.name}
+                      name={item.type.name}
+                      char={true}
+                    />
+                  );
                 })}
               </ul>
             </li>
           );
         })}
       </ul>
+      <button
+        className="pokemon-list__load"
+        onClick={() => {
+          const newOffset = offset + 9; // increment the offset
+          setOffset(newOffset); // update the offset state
+          request.fetchPokemons(newOffset);
+        }}
+      >
+        Load more
+      </button>
     </div>
   );
 }

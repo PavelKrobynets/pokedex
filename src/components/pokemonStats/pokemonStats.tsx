@@ -12,12 +12,7 @@ export default function PokemonStats() {
         <dt>Forms:</dt>
         <dd>3</dd>
       </dl>
-      <button
-        className="pokemon-stats__button"
-        aria-label="View more details about pokemon"
-      >
-        More details
-      </button>
+			<button aria-label="View more details about pokemon" className="pokemon-list__load">More details</button>
     </div>
   );
 }

@@ -7,17 +7,18 @@ import {
   pokemonFiltered,
 	getPokemonTypes,
 } from "../slices/pokemonSlice.ts";
-import { IPokemonStats } from "../types/types.ts";
+import { IPokemonStats, TFilteredPokemonUrl } from "../types/types.ts";
 
 export const useRequests = () => {
   const _pokemon_url = "https://pokeapi.co/api/v2/pokemon/";
 	const _type_url = "https://pokeapi.co/api/v2/type"
   const dispatch = useDispatch();
   const { request } = useHttp();
+	const _basOffset = 0;
 
-  const fetchPokemons = () => {
+  const fetchPokemons = (offset = _basOffset) => {
 		dispatch(pokemonUpdating());
-		request(`${_pokemon_url}?limit=9&offset=0`)
+		request(`${_pokemon_url}?limit=9&offset=${offset}`)
 			.then((data) => {
 				const pokemonPromises = data.results.map((pokemon: IPokemonStats) => {
 					return request(pokemon.url);
@@ -31,8 +32,17 @@ export const useRequests = () => {
 	};
 
   const fetchFilteredPokemons = (type: string) => {
-    request(`${_pokemon_url}type/${type}`)
-      .then((data) => dispatch(pokemonFiltered(data)))
+    request(`${_type_url}/${type}`)
+      .then((data) => {
+				const pokemonPromises = data.pokemon.map((pokemon: TFilteredPokemonUrl) => {
+					return request(pokemon.pokemon.url);
+				});
+				Promise.all(pokemonPromises)
+				.then((pokemonData) => {
+					console.log(pokemonData);
+					dispatch(pokemonFiltered(pokemonData));
+					});
+			})
       .catch(() => {
         console.log("Can't get filtered pokemons");
         dispatch(pokemonUpdatingError());

@@ -12,6 +12,12 @@ export type TPokemonTypes = {
     };
 };
 
+export type TFilteredPokemonUrl = {
+	pokemon:{
+		url: string
+	}
+}
+
 
 
 export interface IPokemonStats {

@@ -20,7 +20,7 @@
     background-color: #70a9a1;
     list-style-type: none;
     border-radius: 15px;
-		cursor: pointer;
+    cursor: pointer;
 
     img {
       width: 80%;
@@ -45,5 +45,34 @@
         border: 1px solid #ffffff99;
       }
     }
+  }
+
+  
+  &__load {
+    transition: all 0.3s ease-in-out;
+    font-family: "Dosis", sans-serif;
+  }
+
+  &__load {
+		margin: 20px 0;
+    width: 150px;
+    height: 50px;
+    border-radius: 50px;
+    background-image: linear-gradient(135deg, #feb692 0%, #71A9A1 100%);
+    box-shadow: 0 20px 30px -6px #71A9A1;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    font-size: 22px;
+    color: white;
+  }
+
+  &__load:hover {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+
+  &__load:active {
+    opacity: 0.5;
   }
 }
