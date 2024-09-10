@@ -1,26 +1,41 @@
-import "./pokemonFilter.scss"
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import PokemonTypes from "../pokemonTypes/PokemonTypes.tsx";
+import { useEffect, useRef } from "react";
+import { RootState } from "../../store/store";
+import { useRequests } from "../../hooks/useRequests.ts";
+import { IPokemonType } from "../../slices/pokemonSlice.ts";
+import "./pokemonFilter.scss";
 
-export default function PokemonFilter() { 
-	return (
-		<div className="pokemon-filter">
-			<div className="pokemon-filter__search">
-        <input className="pokemon-filter__search-input" type="text" />
+export default function PokemonFilter() {
+  const request = useRequests();
+  const types = useSelector((state: RootState) => state.pokemon.types);
+	const searchInput = useRef("");
+
+  useEffect(() => {
+    request.fetchPokemonTypes();
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <div className="pokemon-filter">
+      <div className="pokemon-filter__search">
+        <input className="pokemon-filter__search-input" type="text" ref={searchInput}/>
         <button
           className="pokemon-filter__search-button"
           aria-label="Search Pokémon"
+					onClick={
+						searchInput.current
+					}
         >
           <FaMagnifyingGlass />
         </button>
       </div>
-			<ul className="pokemon-filter__tabs">
-        <li className="pokemon-filter__tabs-item_fire">Fire</li>
-        <li className="pokemon-filter__tabs-item_water">Water</li>
-        <li className="pokemon-filter__tabs-item_ground">Ground</li>
-        <li className="pokemon-filter__tabs-item_flying">Flying</li>
-        <li className="pokemon-filter__tabs-item_dark">Dark</li>
-        <li className="pokemon-filter__tabs-item_electric">Electric</li>
+      <ul className="pokemon-filter__tabs">
+        {types.map((type: IPokemonType) => {
+          return <PokemonTypes key={type.name} name={type.name} />;
+        })}
       </ul>
-		</div>
-	);
+    </div>
+  );
 }

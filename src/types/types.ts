@@ -6,11 +6,19 @@ export type SpriteUrl = {
   };
 };
 
+export type TPokemonTypes = {
+    type: {
+      name: string;
+    };
+};
+
+
+
 export interface IPokemonStats {
   name: string;
   img: string;
   id: number;
-  type: string;
+  types: TPokemonTypes[];
   forms: number;
   url: string;
   sprites: SpriteUrl;

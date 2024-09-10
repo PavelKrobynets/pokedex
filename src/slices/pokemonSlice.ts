@@ -1,13 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface IPokemonState {
-  pokemons: unknown[];
+export interface IPokemonType {
+		name: string;
+		url: string;
+	
+}
+
+
+export interface IPokemonState {
+  pokemons: object[];
   pokemonLoading: "done" | "loading" | "error";
+  types: IPokemonType[];
 }
 
 const initialState: IPokemonState = {
   pokemons: [],
   pokemonLoading: "done",
+  types: [],
 };
 
 const pokemonSlice = createSlice({
@@ -27,6 +36,9 @@ const pokemonSlice = createSlice({
     pokemonFiltered(state, action) {
       state.pokemons = action.payload;
     },
+    getPokemonTypes(state, action) {
+      state.types = [...state.types, ...action.payload];
+    },
   },
 });
 
@@ -35,6 +47,7 @@ export const {
   pokemonUpdated,
   pokemonUpdatingError,
   pokemonFiltered,
+  getPokemonTypes,
 } = pokemonSlice.actions;
 
 export const pokemonReducer = pokemonSlice.reducer;

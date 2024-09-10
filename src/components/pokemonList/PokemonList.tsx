@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import { useRequests } from "../../hooks/useRequests";
 import { RootState } from "../../store/store";
 import Pokeball from "../loaders/Pokeball";
-import { IPokemonStats} from "../../types/types";
+import { IPokemonStats, TPokemonTypes } from "../../types/types";
+import PokemonTypes from "../pokemonTypes/PokemonTypes";
 import "./pokemonList.scss";
-
-
 
 export default function PokemonList() {
   const request = useRequests();
@@ -23,9 +22,7 @@ export default function PokemonList() {
   }, []);
 
   if (pokemonLoadingStatus === "loading") {
-    return (
-      <Pokeball />
-    );
+    return <Pokeball />;
   }
   if (pokemonLoadingStatus === "error") {
     return (
@@ -34,6 +31,7 @@ export default function PokemonList() {
       </div>
     );
   }
+
   return (
     <div className="pokemon-list">
       <h2>Choose your pokemon</h2>
@@ -42,10 +40,15 @@ export default function PokemonList() {
           return (
             <li key={pokemon.id} className="pokemon-list__tab">
               <img
-                src={pokemon.sprites.other["official-artwork"]['front_default']}
+                src={pokemon.sprites.other["official-artwork"]["front_default"]}
                 alt={pokemon.name}
               />
               <h3 className="pokemon-list__tab-name">{pokemon.name}</h3>
+              <ul className="pokemon-list__tab-types">
+                {pokemon.types.map((item: TPokemonTypes) => {
+                  return <PokemonTypes key={item.type.name} name={item.type.name} />;
+                })}
+              </ul>
             </li>
           );
         })}

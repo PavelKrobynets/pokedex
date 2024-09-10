@@ -14,7 +14,7 @@ export default function PokemonStats() {
       </dl>
       <button
         className="pokemon-stats__button"
-        aria-label="View more details about Bulbasaur"
+        aria-label="View more details about pokemon"
       >
         More details
       </button>
