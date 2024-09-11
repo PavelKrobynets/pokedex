@@ -1,34 +1,38 @@
-.pokemon-stats{
-	background-color: #70a9a1;
-	padding: 10px 30px;
-	border-radius: 15px;
-	color: aliceblue;
-	box-shadow:  2px 2px 0px hsl(33, 42%, 46%), 3px 3px 0px hsl(33, 42%, 40%);
+.pokemon-stats {
+  background-color: #70a9a1;
+  padding: 10px 30px;
+  border-radius: 15px;
+  color: aliceblue;
+  box-shadow: 2px 2px 0px hsl(33, 42%, 46%), 3px 3px 0px hsl(33, 42%, 40%);
 
-		&__name{
-			font-size: 30px;
-			margin-top: -20px;
-		}
+  &__img {
+		width: 100%;
+  }
 
-		&__info{
-			margin-top: -30px;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			gap: 30px;
-			font-weight: 600;
+  &__name {
+    font-size: 30px;
+    margin-top: -20px;
+  }
 
-			dd{
-				margin-left: -25px;
-			}
-		}
+  &__info {
+    margin-top: -30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+    font-weight: 600;
 
-		button{
-			width: 65%;
-			font-size: 18px;
-			height: 40px;
-			margin: 0;
-		}
+    dd {
+      margin-left: -25px;
+    }
+  }
+
+  button {
+    width: 65%;
+    font-size: 18px;
+    height: 40px;
+    margin: 0;
+  }
 }
 
 // <div className="pokemon-stats__info">

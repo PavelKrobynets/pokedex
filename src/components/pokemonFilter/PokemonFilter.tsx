@@ -18,8 +18,11 @@ export default function PokemonFilter() {
   }, []);
 
   const handleSearch = () => {
-    const searchValue = searchInput.current?.value;
-    console.log(searchValue);
+    if (searchInput.current) {
+      request.fetchSinglePokemon(searchInput.current.value);
+    } else {
+      request.fetchPokemons(0);
+    }
   };
 
   return (

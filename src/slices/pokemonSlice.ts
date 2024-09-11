@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IPokemonStats } from "../types/types";
 
 export interface IPokemonType {
   name: string;
@@ -9,12 +10,29 @@ export interface IPokemonState {
   pokemons: object[];
   pokemonLoading: "done" | "loading" | "error";
   types: IPokemonType[];
+  singlePokemon: IPokemonStats;
 }
 
 const initialState: IPokemonState = {
   pokemons: [],
   pokemonLoading: "done",
   types: [],
+  singlePokemon: {
+    name: "slowpoke",
+    types: [
+			{type:{name: "water"}},
+			{type:{name: "psychic"}},
+		],
+    sprites: {
+      other: {
+        "official-artwork": {
+          front_default:
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/79.png",
+        },
+      },
+    },
+		forms: [{}, {}]
+  },
 };
 
 const pokemonSlice = createSlice({
@@ -28,15 +46,20 @@ const pokemonSlice = createSlice({
       state.pokemons = [...state.pokemons, ...action.payload];
       state.pokemonLoading = "done";
     },
-		pokemonNewList(state, action){
-			state.pokemons = [...action.payload]
+    pokemonNewList(state, action) {
+      state.pokemons = [...action.payload];
       state.pokemonLoading = "done";
-		},
+    },
     pokemonUpdatingError(state) {
       state.pokemonLoading = "error";
     },
     pokemonFiltered(state, action) {
       state.pokemons = action.payload;
+      state.pokemonLoading = "done";
+    },
+    singlePokemon(state, action) {
+      state.pokemons = [action.payload];
+      state.singlePokemon = action.payload;
       state.pokemonLoading = "done";
     },
     getPokemonTypes(state, action) {
@@ -51,7 +74,8 @@ export const {
   pokemonUpdatingError,
   pokemonFiltered,
   getPokemonTypes,
-	pokemonNewList
+  pokemonNewList,
+  singlePokemon,
 } = pokemonSlice.actions;
 
 export const pokemonReducer = pokemonSlice.reducer;
