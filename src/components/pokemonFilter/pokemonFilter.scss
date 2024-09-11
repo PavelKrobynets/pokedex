@@ -11,7 +11,7 @@
 
     &-input {
       width: 70%;
-      height: 35px;
+      height: 30px;
       border: none;
       border-radius: 0.7em;
       padding-left: 25px;
@@ -20,31 +20,47 @@
 
     &-button {
       background-color: #fff;
-      width: 40px;
+      width: 35px;
+			height: 33px;
       border: 1px solid white;
       border-radius: 50px;
       text-align: center;
       padding: 10px;
       outline: none;
       cursor: pointer;
+
+			svg{
+				width: 95%;
+			}
     }
   }
 
-  &__tabs {
-    list-style-type: none;
-    padding: 15px;
-    margin: 10px 10px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    color: #fff;
-    background-color: #71A9A1;
-    border-radius: 10px;
+  &__container{
+		background-color: #71A9A1;
+		border-radius: 10px;
+		margin: 10px 10px;
+		box-shadow:  -3px -3px 0px hsl(33, 42%, 46%), 3px 3px 0px hsl(33, 42%, 40%);
 
-    li {
-      border-radius: 5%;
-      border: 1px solid #ffffffa9;
-      cursor: pointer;
-    }
-  }
+		.pokemon-list__load{
+			margin-top: -15px;
+			font-size: 16px;
+			height: 35px;
+			width: 45%;
+		}
+		&-tabs {
+			list-style-type: none;
+			padding: 15px;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 5px;
+			color: #fff;
+			margin-top: 5px;
+	
+			li {
+				border-radius: 5%;
+				border: 1px solid #ffffffa9;
+				cursor: pointer;
+			}
+		}
+	}
 }

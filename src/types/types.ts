@@ -22,10 +22,9 @@ export type TFilteredPokemonUrl = {
 
 export interface IPokemonStats {
   name: string;
-  img: string;
-  id: number;
+  id?: number;
   types: TPokemonTypes[];
-  forms: number;
-  url: string;
+  forms?: number;
+  url?: string;
   sprites: SpriteUrl;
 }

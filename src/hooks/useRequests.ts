@@ -6,6 +6,7 @@ import {
   pokemonUpdatingError,
   pokemonFiltered,
 	getPokemonTypes,
+	pokemonNewList,
 } from "../slices/pokemonSlice.ts";
 import { IPokemonStats, TFilteredPokemonUrl } from "../types/types.ts";
 
@@ -16,7 +17,7 @@ export const useRequests = () => {
   const { request } = useHttp();
 	const _basOffset = 0;
 
-  const fetchPokemons = (offset = _basOffset) => {
+  const fetchPokemons = (offset: number = _basOffset, reset: boolean = false) => {
 		dispatch(pokemonUpdating());
 		request(`${_pokemon_url}?limit=9&offset=${offset}`)
 			.then((data) => {
@@ -25,7 +26,11 @@ export const useRequests = () => {
 				});
 				Promise.all(pokemonPromises)
 					.then((pokemonData) => {
-						dispatch(pokemonUpdated(pokemonData));
+						if (reset) {
+							dispatch(pokemonNewList(pokemonData));
+						} else {
+							dispatch(pokemonUpdated(pokemonData));
+						}
 					});
 			})
 			.catch(() => dispatch(pokemonUpdatingError()));

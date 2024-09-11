@@ -10,37 +10,52 @@ import "./pokemonFilter.scss";
 export default function PokemonFilter() {
   const request = useRequests();
   const types = useSelector((state: RootState) => state.pokemon.types);
-	const searchInput = useRef<HTMLInputElement>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     request.fetchPokemonTypes();
     // eslint-disable-next-line
   }, []);
 
-	const handleSearch = () => {
-		const searchValue = searchInput.current?.value;
-		console.log(searchValue);
-	}
+  const handleSearch = () => {
+    const searchValue = searchInput.current?.value;
+    console.log(searchValue);
+  };
 
   return (
     <div className="pokemon-filter">
       <div className="pokemon-filter__search">
-        <input className="pokemon-filter__search-input" type="text" ref={searchInput}/>
+        <input
+          className="pokemon-filter__search-input"
+          type="text"
+          ref={searchInput}
+        />
         <button
           className="pokemon-filter__search-button"
           aria-label="Search Pokémon"
-					onClick={
-						handleSearch
-					}
+          onClick={handleSearch}
         >
           <FaMagnifyingGlass />
         </button>
       </div>
-      <ul className="pokemon-filter__tabs">
-        {types.map((type: IPokemonType) => {
-          return <PokemonTypes key={type.name} name={type.name} char={false}/>;
-        })}
-      </ul>
+      <div className="pokemon-filter__container">
+        <ul className="pokemon-filter__container-tabs">
+          {types.map((type: IPokemonType) => {
+            return (
+              <PokemonTypes key={type.name} name={type.name} char={false} />
+            );
+          })}
+        </ul>
+        <button
+          aria-label="Show all pokemons"
+          className="pokemon-list__load"
+          onClick={() => {
+            request.fetchPokemons(0, true);
+          }}
+        >
+          All pokemons
+        </button>
+      </div>
     </div>
   );
 }

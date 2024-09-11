@@ -10,5 +10,5 @@
   ],
   "dictionaries": ["project-words"],
   "ignorePaths": ["node_modules", "/project-words.txt"],
-  "words": ["pokemons"]
+  "words": ["pokemons", "pokeball"]
 }

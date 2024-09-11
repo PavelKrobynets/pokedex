@@ -15,37 +15,7 @@
     padding: 0;
     margin: 0px;
   }
-  &__tab {
-    box-shadow: 1px 1px 0px hsl(33, 42%, 46%), 2px 2px 0px hsl(33, 42%, 40%);
-    background-color: #70a9a1;
-    list-style-type: none;
-    border-radius: 15px;
-    cursor: pointer;
-
-    img {
-      width: 80%;
-    }
-
-    &-name {
-      color: aliceblue;
-      font-size: 26px;
-      margin-top: -10px;
-    }
-    &-types {
-      list-style-type: none;
-      padding: 10px;
-      margin: -25px 10px 0 10px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 5px;
-      color: #fff;
-      li {
-        border-radius: 4px;
-        padding: 2px 0;
-        border: 1px solid #ffffff99;
-      }
-    }
-  }
+  
 
   
   &__load {
