@@ -11,7 +11,12 @@ import {
   pokemonNewList,
   singlePokemon,
 } from "../slices/pokemonSlice.ts";
-import { IPokemonStats, TFilteredPokemonUrl } from "../types/types.ts";
+import {
+  IPokemonStats,
+  TFilteredPokemonUrl,
+  IPokemonEvolutionObj,
+  EvolutionChain,
+} from "../types/types.ts";
 
 export const useRequests = () => {
   const _pokemon_url = "https://pokeapi.co/api/v2/pokemon/";
@@ -22,11 +27,11 @@ export const useRequests = () => {
   const dispatch = useDispatch();
   const { request } = useHttp();
   const _baseLimit = 90;
-	const _baseOffset = 0;
+  const _baseOffset = 0;
 
   const fetchPokemons = (
     limit: number = _baseLimit,
-		offset: number = _baseOffset,
+    offset: number = _baseOffset,
     reset: boolean = false
   ) => {
     dispatch(pokemonUpdating());
@@ -69,6 +74,16 @@ export const useRequests = () => {
       });
   };
 
+  const fetchPokemonTypes = () => {
+    request(`${_type_url}`)
+      .then((data) => {
+        dispatch(getPokemonTypes(data.results));
+      })
+      .catch(() => {
+        console.log("Can't get pokemon types");
+      });
+  };
+
   const fetchSinglePokemon = useMemo(() => {
     return (name: string) => {
       request(`${_pokemon_url}${name}`)
@@ -83,13 +98,51 @@ export const useRequests = () => {
     }; // eslint-disable-next-line
   }, [singlePokemonData]);
 
-  const fetchPokemonTypes = () => {
-    request(`${_type_url}`)
+  const fetchEvolutionForms = (pokemonName: string) => {
+    let imgNumber: number;
+    request(`${_pokemon_url}${pokemonName}`)
       .then((data) => {
-        dispatch(getPokemonTypes(data.results));
+        imgNumber = data.id;
+        console.log(data);
+        return request(data.species.url);
       })
-      .catch(() => {
-        console.log("Can't get pokemon types");
+      .then((data) => {
+        console.log(data);
+        return request(data.evolution_chain.url);
+      })
+      .then((data) => {
+        console.log(data);
+        const evolutionForms: IPokemonEvolutionObj[] = [];
+        function extractEvolutionForms(chain: EvolutionChain) {
+					console.log(chain.chain.species);
+          if (chain && chain.chain && chain.chain.species) {
+            evolutionForms.push({
+              img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imgNumber}.png`,
+              name: chain.chain.species.name,
+            });
+          } 
+					if(chain.chain.evolves_to && chain.chain.evolves_to[0].species){
+						request(`${_pokemon_url}/${chain.chain.evolves_to[0].species.name}`)
+						.then(data => {
+							evolutionForms.push({
+								img: data.sprites.other["official-artwork"]["front_default"],
+								name: chain.chain.evolves_to[0].species.name,
+							});
+						})
+					}
+					if (chain.chain.evolves_to[0].evolves_to[0].species) {
+						request(`${_pokemon_url}/${chain.chain.evolves_to[0].evolves_to[0].species.name}`)
+						.then(data => {
+							evolutionForms.push({
+								img: data.sprites.other["official-artwork"]["front_default"],
+								name: chain.chain.evolves_to[0].evolves_to[0].species.name,
+							});
+						})
+					}
+        }
+        extractEvolutionForms(data);
+        console.log(evolutionForms);
+        return evolutionForms;
       });
   };
 
@@ -98,5 +151,6 @@ export const useRequests = () => {
     fetchFilteredPokemons,
     fetchPokemonTypes,
     fetchSinglePokemon,
+    fetchEvolutionForms,
   };
 };

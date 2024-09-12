@@ -7,18 +7,25 @@ export type SpriteUrl = {
 };
 
 export type TPokemonTypes = {
-    type: {
-      name: string;
-    };
+  type: {
+    name: string;
+  };
 };
 
 export type TFilteredPokemonUrl = {
-	pokemon:{
-		url: string
-	}
-}
+  pokemon: {
+    url: string;
+  };
+};
 
-
+export type TStats = {
+  [key: number]: {
+    base_stat: number;
+    stat: {
+      name: string;
+    };
+  };
+};
 
 export interface IPokemonStats {
   name: string;
@@ -27,4 +34,30 @@ export interface IPokemonStats {
   forms?: object[];
   url?: string;
   sprites: SpriteUrl;
+}
+
+export interface IPokemonEvolutionObj {
+  img: string;
+  name: string;
+}
+
+export interface EvolutionChain {
+  chain: {
+    species: { name: string };
+    evolves_to: [
+      {
+        species: { name: string };
+        evolves_to: [
+          {
+            species: { name: string };
+          }
+        ];
+      }
+    ];
+  };
+}
+
+export interface ISinglePokemonData extends IPokemonStats {
+  evolutions: IPokemonEvolutionObj[];
+  stats: TStats[];
 }

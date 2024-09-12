@@ -59,7 +59,6 @@ const pokemonSlice = createSlice({
     },
     singlePokemon(state, action) {
       state.singlePokemon = action.payload;
-      state.pokemonLoading = "done";
     },
     getPokemonTypes(state, action) {
       state.types = [...state.types, ...action.payload];
