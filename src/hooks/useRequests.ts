@@ -16,19 +16,21 @@ import { IPokemonStats, TFilteredPokemonUrl } from "../types/types.ts";
 export const useRequests = () => {
   const _pokemon_url = "https://pokeapi.co/api/v2/pokemon/";
   const _type_url = "https://pokeapi.co/api/v2/type";
-	const singlePokemonData = useSelector(
+  const singlePokemonData = useSelector(
     (state: RootState) => state.pokemon.singlePokemon
   );
   const dispatch = useDispatch();
   const { request } = useHttp();
-  const _basOffset = 0;
+  const _baseLimit = 90;
+	const _baseOffset = 0;
 
   const fetchPokemons = (
-    offset: number = _basOffset,
+    limit: number = _baseLimit,
+		offset: number = _baseOffset,
     reset: boolean = false
   ) => {
     dispatch(pokemonUpdating());
-    request(`${_pokemon_url}?limit=9&offset=${offset}`)
+    request(`${_pokemon_url}?limit=${limit}&offset=${offset}`)
       .then((data) => {
         const pokemonPromises = data.results.map((pokemon: IPokemonStats) => {
           if (pokemon.url) {
@@ -71,14 +73,14 @@ export const useRequests = () => {
     return (name: string) => {
       request(`${_pokemon_url}${name}`)
         .then((data) => {
-					console.log(data);
+          console.log(data);
           dispatch(singlePokemon(data));
         })
         .catch(() => {
           dispatch(pokemonUpdatingError());
           console.log("Error fetching single pokemon");
         });
-    };// eslint-disable-next-line
+    }; // eslint-disable-next-line
   }, [singlePokemonData]);
 
   const fetchPokemonTypes = () => {

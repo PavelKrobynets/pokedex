@@ -58,7 +58,6 @@ const pokemonSlice = createSlice({
       state.pokemonLoading = "done";
     },
     singlePokemon(state, action) {
-      state.pokemons = [action.payload];
       state.singlePokemon = action.payload;
       state.pokemonLoading = "done";
     },

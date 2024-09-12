@@ -4,6 +4,8 @@
   border-radius: 15px;
   color: aliceblue;
   box-shadow: 2px 2px 0px hsl(33, 42%, 46%), 3px 3px 0px hsl(33, 42%, 40%);
+	margin-top: 15px;
+	max-width: 70%;
 
   &__img {
 		width: 100%;
@@ -11,19 +13,19 @@
 
   &__name {
     font-size: 30px;
-    margin-top: -20px;
+    margin-top: -10px;
   }
 
   &__info {
-    margin-top: -30px;
+    margin-top: -20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 30px;
+    justify-content: center;
     font-weight: 600;
+		gap: 15px;
 
     dd {
-      margin-left: -25px;
+      margin-left: -5%;
     }
   }
 

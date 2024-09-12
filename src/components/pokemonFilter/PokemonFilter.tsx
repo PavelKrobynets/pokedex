@@ -18,10 +18,10 @@ export default function PokemonFilter() {
   }, []);
 
   const handleSearch = () => {
-    if (searchInput.current) {
+    if (searchInput.current && searchInput.current.value != "") {
       request.fetchSinglePokemon(searchInput.current.value);
     } else {
-      request.fetchPokemons(0);
+      request.fetchPokemons(90, 0, true);
     }
   };
 
@@ -53,7 +53,10 @@ export default function PokemonFilter() {
           aria-label="Show all pokemons"
           className="pokemon-list__load"
           onClick={() => {
-            request.fetchPokemons(0, true);
+            request.fetchPokemons(90, 0, true);
+            if (searchInput.current) {
+							searchInput.current.value = ""
+						}
           }}
         >
           All pokemons

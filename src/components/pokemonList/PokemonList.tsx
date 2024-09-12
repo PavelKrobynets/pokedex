@@ -8,43 +8,68 @@ import "./pokemonList.scss";
 
 export default function PokemonList() {
   const request = useRequests();
+  const [limit, setLimit] = useState(90);
   const [offset, setOffset] = useState(0);
-  const pokemonLoadingStatus = useSelector(
-    (state: RootState) => state.pokemon.pokemonLoading
-  );
+  const [slice, setSlice] = useState(9);
+  const {pokemonLoadingStatus, pokemons} = useSelector((state: RootState) => ({
+    pokemonLoadingStatus: state.pokemon.pokemonLoading,
+    pokemons: state.pokemon.pokemons,
+  }));
 
   useEffect(() => {
-    request.fetchPokemons(offset);
+    request.fetchPokemons(limit);
     // eslint-disable-next-line
   }, []);
 
-  if (pokemonLoadingStatus === "loading") {
-    return <Pokeball />;
-  }
-  if (pokemonLoadingStatus === "error") {
-    return (
-      <div className="pokemon-list">
-        <h2>Error...</h2>
-      </div>
-    );
+  useEffect(() => {
+		setLimit(90)
+		setOffset(0)
+		setSlice(9)
+	},[pokemons]);
+
+  let content;
+  switch (pokemonLoadingStatus) {
+    case "done":
+      content = (
+        <>
+          <ul className="pokemon-list__tabs">
+            <PokemonCard slice={slice} />
+          </ul>
+          <button
+            className="pokemon-list__load"
+            onClick={() => {
+              if (slice === limit) {
+                const newLimit = limit + 90,
+                  newOffset = offset + 90;
+                setOffset(newOffset);
+                setLimit(newLimit);
+                request.fetchPokemons(newLimit, newOffset, false);
+                setSlice(slice + 9);
+              } else {
+                setSlice(slice + 9);
+              }
+            }}
+          >
+            Load more
+          </button>
+        </>
+      );
+
+      break;
+    case "loading":
+      content = <Pokeball />;
+      break;
+    case "error":
+      content = <h2>Error...</h2>;
+      break;
+    default:
+      content = null;
   }
 
   return (
     <div className="pokemon-list">
       <h2>Choose your pokemon</h2>
-      <ul className="pokemon-list__tabs">
-				<PokemonCard />
-			</ul>
-      <button
-        className="pokemon-list__load"
-        onClick={() => {
-          const newOffset = offset + 9; // increment the offset
-          setOffset(newOffset); // update the offset state
-          request.fetchPokemons(newOffset, false);
-        }}
-      >
-        Load more
-      </button>
+      {content}
     </div>
   );
 }
