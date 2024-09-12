@@ -24,7 +24,7 @@ export interface IPokemonStats {
   name: string;
   id?: number;
   types: TPokemonTypes[];
-  forms?: [];
+  forms?: object[];
   url?: string;
   sprites: SpriteUrl;
 }

@@ -19,9 +19,9 @@ export default function PokemonStats() {
       <h3 className="pokemon-stats__name">{pokemon.name}</h3>
       <dl className="pokemon-stats__info">
         <dt>Type:</dt>
-        <dd>{pokemon.types && pokemon.types.join(", ")}</dd>
+        <dd>{pokemon.types && pokemon.types.map((obj) => obj.type.name).join("/")}</dd>
         <dt>Forms:</dt>
-        <dd>{pokemon.forms.length}</dd>
+        <dd>{pokemon.forms && pokemon.forms.length}</dd>
       </dl>
       <button
         aria-label="View more details about pokemon"
