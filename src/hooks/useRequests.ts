@@ -100,45 +100,54 @@ export const useRequests = () => {
 
   const fetchEvolutionForms = (pokemonName: string) => {
     let imgNumber: number;
-    request(`${_pokemon_url}${pokemonName}`)
+    request(`${_pokemon_url}${pokemonName.toLowerCase()}`)
       .then((data) => {
         imgNumber = data.id;
-        console.log(data);
         return request(data.species.url);
       })
       .then((data) => {
-        console.log(data);
         return request(data.evolution_chain.url);
       })
       .then((data) => {
-        console.log(data);
         const evolutionForms: IPokemonEvolutionObj[] = [];
         function extractEvolutionForms(chain: EvolutionChain) {
-					console.log(chain.chain.species);
           if (chain && chain.chain && chain.chain.species) {
             evolutionForms.push({
               img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imgNumber}.png`,
               name: chain.chain.species.name,
             });
-          } 
-					if(chain.chain.evolves_to && chain.chain.evolves_to[0].species){
-						request(`${_pokemon_url}/${chain.chain.evolves_to[0].species.name}`)
-						.then(data => {
-							evolutionForms.push({
-								img: data.sprites.other["official-artwork"]["front_default"],
-								name: chain.chain.evolves_to[0].species.name,
-							});
-						})
-					}
-					if (chain.chain.evolves_to[0].evolves_to[0].species) {
-						request(`${_pokemon_url}/${chain.chain.evolves_to[0].evolves_to[0].species.name}`)
-						.then(data => {
-							evolutionForms.push({
-								img: data.sprites.other["official-artwork"]["front_default"],
-								name: chain.chain.evolves_to[0].evolves_to[0].species.name,
-							});
-						})
-					}
+          }
+          if (
+            chain.chain.evolves_to &&
+            chain.chain.evolves_to[0] &&
+            chain.chain.evolves_to[0].species
+          ) {
+            request(
+              `${_pokemon_url}/${chain.chain.evolves_to[0].species.name}`
+            ).then((data) => {
+              evolutionForms.push({
+                img: data.sprites.other["official-artwork"]["front_default"],
+                name: chain.chain.evolves_to[0].species.name,
+              });
+            });
+          }
+          if (
+						chain.chain.evolves_to[0] &&
+            chain.chain.evolves_to[0].evolves_to &&
+            chain.chain.evolves_to[0].evolves_to[0] &&
+            chain.chain.evolves_to[0].evolves_to[0].species
+          ) {
+            request(
+              `${_pokemon_url}/${chain.chain.evolves_to[0].evolves_to[0].species.name}`
+            ).then((data) => {
+              evolutionForms.push({
+                img: data.sprites.other["official-artwork"]["front_default"],
+                name: chain.chain.evolves_to[0].evolves_to[0].species.name,
+              });
+            });
+          } else {
+            return;
+          }
         }
         extractEvolutionForms(data);
         console.log(evolutionForms);

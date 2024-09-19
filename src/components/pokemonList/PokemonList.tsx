@@ -18,7 +18,7 @@ export default function PokemonList() {
 
   useEffect(() => {
     request.fetchPokemons(limit);
-		request.fetchEvolutionForms("bulbasaur")
+		request.fetchEvolutionForms("Pinsir")
     // eslint-disable-next-line
   }, []);
 
