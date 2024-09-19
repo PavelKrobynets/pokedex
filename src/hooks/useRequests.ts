@@ -120,7 +120,8 @@ export const useRequests = () => {
           if (
             chain.chain.evolves_to &&
             chain.chain.evolves_to[0] &&
-            chain.chain.evolves_to[0].species
+            chain.chain.evolves_to[0].species &&
+            chain.chain.evolves_to.length < 2
           ) {
             request(
               `${_pokemon_url}/${chain.chain.evolves_to[0].species.name}`
@@ -130,9 +131,23 @@ export const useRequests = () => {
                 name: chain.chain.evolves_to[0].species.name,
               });
             });
+          } else if (chain.chain.evolves_to.length > 2) {
+            console.log(chain.chain.evolves_to);
+            chain.chain.evolves_to.forEach((evolution) => {
+              request(`${_pokemon_url}/${evolution.species.name}`).then(
+                (data) => {
+                  evolutionForms.push({
+                    img: data.sprites.other["official-artwork"][
+                      "front_default"
+                    ],
+                    name: evolution.species.name,
+                  });
+                }
+              );
+            });
           }
           if (
-						chain.chain.evolves_to[0] &&
+            chain.chain.evolves_to[0] &&
             chain.chain.evolves_to[0].evolves_to &&
             chain.chain.evolves_to[0].evolves_to[0] &&
             chain.chain.evolves_to[0].evolves_to[0].species
