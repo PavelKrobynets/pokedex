@@ -4,6 +4,7 @@ import { useRequests } from "../../hooks/useRequests";
 import { RootState } from "../../store/store";
 import Pokeball from "../loaders/Pokeball";
 import PokemonCard from "../pokemonCard/PokemonCard";
+import PokemonFullInfo from "../pokemonFullInfo/PokemonFullInfo";
 import "./pokemonList.scss";
 
 export default function PokemonList() {
@@ -11,28 +12,30 @@ export default function PokemonList() {
   const [limit, setLimit] = useState(90);
   const [offset, setOffset] = useState(0);
   const [slice, setSlice] = useState(9);
-  const {pokemonLoadingStatus, pokemons} = useSelector((state: RootState) => ({
-    pokemonLoadingStatus: state.pokemon.pokemonLoading,
-    pokemons: state.pokemon.pokemons,
-  }));
+  const { pokemonLoadingStatus, pokemons } = useSelector(
+    (state: RootState) => ({
+      pokemonLoadingStatus: state.pokemon.pokemonLoading,
+      pokemons: state.pokemon.pokemons,
+    })
+  );
 
   useEffect(() => {
     request.fetchPokemons(limit);
-		request.fetchEvolutionForms("jolteon")
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-		setLimit(90)
-		setOffset(0)
-		setSlice(9)
-	},[pokemons]);
+    setLimit(90);
+    setOffset(0);
+    setSlice(9);
+  }, [pokemons]);
 
   let content;
   switch (pokemonLoadingStatus) {
     case "done":
       content = (
         <>
+          <h2>Choose your pokemon</h2>
           <ul className="pokemon-list__tabs">
             <PokemonCard slice={slice} />
           </ul>
@@ -63,14 +66,12 @@ export default function PokemonList() {
     case "error":
       content = <h2>Error...</h2>;
       break;
+    case "single":
+      content = <PokemonFullInfo />;
+      break;
     default:
       content = null;
   }
 
-  return (
-    <div className="pokemon-list">
-      <h2>Choose your pokemon</h2>
-      {content}
-    </div>
-  );
+  return <div className="pokemon-list">{content}</div>;
 }

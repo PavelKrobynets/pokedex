@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IPokemonStats } from "../types/types";
+import { ISinglePokemonData } from "../types/types";
+
 
 export interface IPokemonType {
   name: string;
@@ -8,9 +9,9 @@ export interface IPokemonType {
 
 export interface IPokemonState {
   pokemons: object[];
-  pokemonLoading: "done" | "loading" | "error";
+  pokemonLoading: "done" | "loading" | "error" | "single";
   types: IPokemonType[];
-  singlePokemon: IPokemonStats;
+  singlePokemon: ISinglePokemonData;
 }
 
 const initialState: IPokemonState = {
@@ -19,10 +20,7 @@ const initialState: IPokemonState = {
   types: [],
   singlePokemon: {
     name: "slowpoke",
-    types: [
-			{type:{name: "water"}},
-			{type:{name: "psychic"}},
-		],
+    types: [{ type: { name: "water" } }, { type: { name: "psychic" } }],
     sprites: {
       other: {
         "official-artwork": {
@@ -31,7 +29,9 @@ const initialState: IPokemonState = {
         },
       },
     },
-		forms: [{}, {}]
+    forms: [{}, {}],
+    evolutions: [],
+    stats: [],
   },
 };
 
@@ -60,6 +60,11 @@ const pokemonSlice = createSlice({
     singlePokemon(state, action) {
       state.singlePokemon = action.payload;
     },
+		getEvolutionForms(state, action) {
+			console.log(action.payload)
+			state.singlePokemon.evolutions = action.payload;
+			state.pokemonLoading = "single";
+		},
     getPokemonTypes(state, action) {
       state.types = [...state.types, ...action.payload];
     },
@@ -74,6 +79,7 @@ export const {
   getPokemonTypes,
   pokemonNewList,
   singlePokemon,
+	getEvolutionForms
 } = pokemonSlice.actions;
 
 export const pokemonReducer = pokemonSlice.reducer;

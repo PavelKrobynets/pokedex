@@ -1,13 +1,14 @@
 import "./pokemonStats.scss";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-import { IPokemonStats } from "../../types/types";
+import { ISinglePokemonData } from "../../types/types";
+import { useRequests } from "../../hooks/useRequests";
 
 export default function PokemonStats() {
-  const pokemon: IPokemonStats = useSelector(
+  const pokemon: ISinglePokemonData = useSelector(
     (state: RootState) => state.pokemon.singlePokemon
   );
-
+	const request = useRequests();
 
   return (
     <div className="pokemon-stats">
@@ -26,6 +27,7 @@ export default function PokemonStats() {
       <button
         aria-label="View more details about pokemon"
         className="pokemon-list__load"
+				onClick={() => {request.fetchEvolutionForms(pokemon.name)}}
       >
         More details
       </button>

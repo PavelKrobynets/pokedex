@@ -10,6 +10,7 @@ import {
   getPokemonTypes,
   pokemonNewList,
   singlePokemon,
+  getEvolutionForms,
 } from "../slices/pokemonSlice.ts";
 import {
   IPokemonStats,
@@ -88,7 +89,6 @@ export const useRequests = () => {
     return (name: string) => {
       request(`${_pokemon_url}${name}`)
         .then((data) => {
-          console.log(data);
           dispatch(singlePokemon(data));
         })
         .catch(() => {
@@ -98,76 +98,60 @@ export const useRequests = () => {
     }; // eslint-disable-next-line
   }, [singlePokemonData]);
 
-  const fetchEvolutionForms = (pokemonName: string) => {
-    let imgNumber: number;
-    request(`${_pokemon_url}${pokemonName.toLowerCase()}`)
-      .then((data) => {
-        imgNumber = data.id;
-        return request(data.species.url);
-      })
-      .then((data) => {
-        return request(data.evolution_chain.url);
-      })
-      .then((data) => {
-        const evolutionForms: IPokemonEvolutionObj[] = [];
-        function extractEvolutionForms(chain: EvolutionChain) {
-          if (chain && chain.chain && chain.chain.species) {
-            evolutionForms.push({
-              img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imgNumber}.png`,
-              name: chain.chain.species.name,
-            });
-          }
-          if (
-            chain.chain.evolves_to &&
-            chain.chain.evolves_to[0] &&
-            chain.chain.evolves_to[0].species &&
-            chain.chain.evolves_to.length < 2
-          ) {
-            request(
-              `${_pokemon_url}/${chain.chain.evolves_to[0].species.name}`
-            ).then((data) => {
-              evolutionForms.push({
-                img: data.sprites.other["official-artwork"]["front_default"],
-                name: chain.chain.evolves_to[0].species.name,
-              });
-            });
-          } else if (chain.chain.evolves_to.length > 2) {
-            console.log(chain.chain.evolves_to);
-            chain.chain.evolves_to.forEach((evolution) => {
-              request(`${_pokemon_url}/${evolution.species.name}`).then(
-                (data) => {
-                  evolutionForms.push({
-                    img: data.sprites.other["official-artwork"][
-                      "front_default"
-                    ],
-                    name: evolution.species.name,
-                  });
-                }
-              );
-            });
-          }
-          if (
-            chain.chain.evolves_to[0] &&
-            chain.chain.evolves_to[0].evolves_to &&
-            chain.chain.evolves_to[0].evolves_to[0] &&
-            chain.chain.evolves_to[0].evolves_to[0].species
-          ) {
-            request(
-              `${_pokemon_url}/${chain.chain.evolves_to[0].evolves_to[0].species.name}`
-            ).then((data) => {
-              evolutionForms.push({
-                img: data.sprites.other["official-artwork"]["front_default"],
-                name: chain.chain.evolves_to[0].evolves_to[0].species.name,
-              });
-            });
-          } else {
-            return;
-          }
-        }
-        extractEvolutionForms(data);
-        console.log(evolutionForms);
-        return evolutionForms;
-      });
+
+  const fetchEvolutionForms = async (pokemonName: string) => {
+    try {
+      const data = await request(`${_pokemon_url}${pokemonName.toLowerCase()}`);
+      const imgNumber = data.id;
+      const speciesData = await request(data.species.url);
+      const evolutionChainData = await request(speciesData.evolution_chain.url);
+
+      const evolutionForms: IPokemonEvolutionObj[] = [];
+
+      if (evolutionChainData.chain && evolutionChainData.chain.species) {
+        evolutionForms.push({
+          img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imgNumber}.png`,
+          name: evolutionChainData.chain.species.name,
+        });
+      }
+
+      if (evolutionChainData.chain.evolves_to) {
+        const evolvesToData = await Promise.all(
+          evolutionChainData.chain.evolves_to.map((evolution) =>
+            request(`${_pokemon_url}/${evolution.species.name}`)
+          )
+        );
+
+        evolvesToData.forEach((data, index) => {
+          evolutionForms.push({
+            img: data.sprites.other["official-artwork"]["front_default"],
+            name: evolutionChainData.chain.evolves_to[index].species.name,
+          });
+        });
+      }
+
+      if (
+        evolutionChainData.chain.evolves_to &&
+        evolutionChainData.chain.evolves_to[0] &&
+        evolutionChainData.chain.evolves_to[0].evolves_to &&
+        evolutionChainData.chain.evolves_to[0].evolves_to[0] &&
+        evolutionChainData.chain.evolves_to[0].evolves_to[0].species
+      ) {
+        const data = await request(
+          `${_pokemon_url}/${evolutionChainData.chain.evolves_to[0].evolves_to[0].species.name}`
+        );
+        evolutionForms.push({
+          img: data.sprites.other["official-artwork"]["front_default"],
+          name: evolutionChainData.chain.evolves_to[0].evolves_to[0].species
+            .name,
+        });
+      }
+
+      console.log(evolutionForms);
+      dispatch(getEvolutionForms(evolutionForms));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return {

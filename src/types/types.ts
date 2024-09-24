@@ -19,12 +19,10 @@ export type TFilteredPokemonUrl = {
 };
 
 export type TStats = {
-  [key: number]: {
     base_stat: number;
     stat: {
       name: string;
     };
-  };
 };
 
 export interface IPokemonStats {
@@ -35,6 +33,7 @@ export interface IPokemonStats {
   url?: string;
   sprites: SpriteUrl;
 }
+
 
 export interface IPokemonEvolutionObj {
   img: string;
