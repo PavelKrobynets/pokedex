@@ -3,12 +3,18 @@ import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { ISinglePokemonData } from "../../types/types";
 import { useRequests } from "../../hooks/useRequests";
+import { useEffect } from "react";
 
 export default function PokemonStats() {
   const pokemon: ISinglePokemonData = useSelector(
     (state: RootState) => state.pokemon.singlePokemon
   );
 	const request = useRequests();
+
+	useEffect(() => {
+		request.fetchSinglePokemon("slowpoke")
+		// eslint-disable-next-line
+	},[])
 
   return (
     <div className="pokemon-stats">

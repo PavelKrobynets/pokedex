@@ -12,10 +12,9 @@ export default function PokemonList() {
   const [limit, setLimit] = useState(90);
   const [offset, setOffset] = useState(0);
   const [slice, setSlice] = useState(9);
-  const { pokemonLoadingStatus, pokemons } = useSelector(
+  const { pokemonLoadingStatus} = useSelector(
     (state: RootState) => ({
-      pokemonLoadingStatus: state.pokemon.pokemonLoading,
-      pokemons: state.pokemon.pokemons,
+      pokemonLoadingStatus: state.pokemon.pokemonLoading
     })
   );
 
@@ -24,17 +23,13 @@ export default function PokemonList() {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    setLimit(90);
-    setOffset(0);
-    setSlice(9);
-  }, [pokemons]);
+
 
   let content;
   switch (pokemonLoadingStatus) {
     case "done":
       content = (
-        <>
+        <div className="pokemon-list">
           <h2>Choose your pokemon</h2>
           <ul className="pokemon-list__tabs">
             <PokemonCard slice={slice} />
@@ -43,11 +38,9 @@ export default function PokemonList() {
             className="pokemon-list__load"
             onClick={() => {
               if (slice === limit) {
-                const newLimit = limit + 90,
-                  newOffset = offset + 90;
-                setOffset(newOffset);
-                setLimit(newLimit);
-                request.fetchPokemons(newLimit, newOffset, false);
+								request.fetchPokemons(limit + 90, offset + 90, false);
+								setLimit(limit + 90);
+								setOffset(offset + 90);
                 setSlice(slice + 9);
               } else {
                 setSlice(slice + 9);
@@ -56,7 +49,7 @@ export default function PokemonList() {
           >
             Load more
           </button>
-        </>
+        </div>
       );
 
       break;
@@ -73,5 +66,5 @@ export default function PokemonList() {
       content = null;
   }
 
-  return <div className="pokemon-list">{content}</div>;
+  return <>{content}</>;
 }

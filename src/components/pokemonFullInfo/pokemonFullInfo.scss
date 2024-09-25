@@ -1,38 +1,55 @@
-.pokemon-info{
+.pokemon-info {
+  box-shadow: 5px 5px 0px hsl(33, 42%, 46%), -5px -5px 0px hsl(33, 42%, 40%);
+  background-color: #70a9a1;
+  border-radius: 15px;
+  color:aliceblue ;
+	&__img {
+    width: 50%;
+    margin-bottom: -40px;
+		margin-top: 40px;
+  }
 
-	&__img{
-		width: 50%;
+  &__name {
+    font-size: 60px;
+    text-transform: uppercase;
+    line-height: 5px;
+		margin-bottom: 40px;
+  }
+
+	&__types{
+		font-size: 24px;
 	}
 
-	&__stats{
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 5px;
-		padding: 0;
-	} 
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    padding: 0;
+  }
 
-	&__evolution{
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 5px;
-		list-style: none;
-		padding: 0 25px;
+  &__evolution {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    list-style: none;
+		align-items: center;
+		width: 100%;
 
-		&-item{
-			max-width: 200px;
-			text-align: center;
+    &-item {
+      max-width: 200px;
+      text-align: center;
 
-			&-img{
-				width: 100%;
-				margin-bottom: -10px;
-			}
-			&-name{
-				text-transform: uppercase;
-				font-size: 24px;
-				font-weight: 600;
-			}
-		}
-	}
+      &-img {
+        width: 100%;
+        margin-bottom: -10px;
+      }
+      &-name {
+        text-transform: uppercase;
+        font-size: 24px;
+        font-weight: 600;
+      }
+    }
+  }
 }
 .pokemon-info__stats-item {
   display: flex;
@@ -40,30 +57,29 @@
   margin-bottom: 10px;
 }
 
-.stat{
-	&-name {
-		width: 100px;
-		text-align: right;
-		margin-right: 10px;
-	}
+.stat {
+  &-name {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+  }
 
-	&-value {
-		margin-right: 10px;
-	}
+  &-value {
+    margin-right: 10px;
+  }
 
-	&-bar {
-		height: 10px;
-		width: 60%;
-		background-color: #ffffff80;
-		border-radius: 10px;
-		overflow: hidden;
+  &-bar {
+    height: 10px;
+    width: 60%;
+    background-color: #ffffffaf;
+    border-radius: 10px;
+    overflow: hidden;
 
-		&-fill {
-			height: 100%;
-			background-color: #70A9A1;
-			border-radius: 10px;
-			transition: width 0.5s ease-in-out;
-		}
-	}
+    &-fill {
+      height: 100%;
+      background-color: #49f4dd;
+      border-radius: 10px;
+      transition: width 0.5s ease-in-out;
+    }
+  }
 }
-

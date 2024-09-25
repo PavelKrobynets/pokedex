@@ -17,7 +17,7 @@ console.log(pokemon.evolutions);
       />
       <h3 className="pokemon-info__name">{pokemon.name}</h3>
       <div className="pokemon-info__types">
-        {pokemon.types && pokemon.types.map((obj) => obj.type.name).join("/")}
+        Type:{pokemon.types && pokemon.types.map((obj) => obj.type.name).join("/")}
       </div>
       <ul className="pokemon-info__stats">
         {pokemon.stats &&

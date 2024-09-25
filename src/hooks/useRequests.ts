@@ -102,15 +102,15 @@ export const useRequests = () => {
   const fetchEvolutionForms = async (pokemonName: string) => {
     try {
       const data = await request(`${_pokemon_url}${pokemonName.toLowerCase()}`);
-      const imgNumber = data.id;
       const speciesData = await request(data.species.url);
       const evolutionChainData = await request(speciesData.evolution_chain.url);
 
       const evolutionForms: IPokemonEvolutionObj[] = [];
 
       if (evolutionChainData.chain && evolutionChainData.chain.species) {
+				const name = await request(`${_pokemon_url}${evolutionChainData.chain.species.name.toLowerCase()}`)
         evolutionForms.push({
-          img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imgNumber}.png`,
+          img: name.sprites.other["official-artwork"]["front_default"],
           name: evolutionChainData.chain.species.name,
         });
       }
