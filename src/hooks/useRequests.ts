@@ -16,6 +16,7 @@ import {
   IPokemonStats,
   TFilteredPokemonUrl,
   IPokemonEvolutionObj,
+  Evolution,
 } from "../types/types.ts";
 
 export const useRequests = () => {
@@ -97,7 +98,6 @@ export const useRequests = () => {
     }; // eslint-disable-next-line
   }, [singlePokemonData]);
 
-
   const fetchEvolutionForms = async (pokemonName: string) => {
     try {
       const data = await request(`${_pokemon_url}${pokemonName.toLowerCase()}`);
@@ -107,7 +107,9 @@ export const useRequests = () => {
       const evolutionForms: IPokemonEvolutionObj[] = [];
 
       if (evolutionChainData.chain && evolutionChainData.chain.species) {
-				const name = await request(`${_pokemon_url}${evolutionChainData.chain.species.name.toLowerCase()}`)
+        const name = await request(
+          `${_pokemon_url}${evolutionChainData.chain.species.name.toLowerCase()}`
+        );
         evolutionForms.push({
           img: name.sprites.other["official-artwork"]["front_default"],
           name: evolutionChainData.chain.species.name,
@@ -116,7 +118,7 @@ export const useRequests = () => {
 
       if (evolutionChainData.chain.evolves_to) {
         const evolvesToData = await Promise.all(
-          evolutionChainData.chain.evolves_to.map((evolution) =>
+          evolutionChainData.chain.evolves_to.map((evolution: Evolution) =>
             request(`${_pokemon_url}/${evolution.species.name}`)
           )
         );

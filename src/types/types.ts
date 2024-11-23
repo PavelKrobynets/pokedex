@@ -19,10 +19,10 @@ export type TFilteredPokemonUrl = {
 };
 
 export type TStats = {
-    base_stat: number;
-    stat: {
-      name: string;
-    };
+  base_stat: number;
+  stat: {
+    name: string;
+  };
 };
 
 export interface IPokemonStats {
@@ -34,13 +34,24 @@ export interface IPokemonStats {
   sprites: SpriteUrl;
 }
 
+export interface Evolution {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: Evolution[]; // This allows for chaining evolutions
+}
+
+export interface EvolutionChainData {
+  chain: {
+    evolves_to: Evolution[];
+  };
+}
 
 export interface IPokemonEvolutionObj {
   img: string;
   name: string;
 }
-
-
 
 export interface ISinglePokemonData extends IPokemonStats {
   evolutions: IPokemonEvolutionObj[];
