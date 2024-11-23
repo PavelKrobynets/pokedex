@@ -40,21 +40,7 @@ export interface IPokemonEvolutionObj {
   name: string;
 }
 
-export interface EvolutionChain {
-  chain: {
-    species: { name: string };
-    evolves_to: [
-      {
-        species: { name: string };
-        evolves_to: [
-          {
-            species: { name: string };
-          }
-        ];
-      }
-    ];
-  };
-}
+
 
 export interface ISinglePokemonData extends IPokemonStats {
   evolutions: IPokemonEvolutionObj[];

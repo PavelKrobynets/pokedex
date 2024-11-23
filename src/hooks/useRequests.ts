@@ -16,7 +16,6 @@ import {
   IPokemonStats,
   TFilteredPokemonUrl,
   IPokemonEvolutionObj,
-  EvolutionChain,
 } from "../types/types.ts";
 
 export const useRequests = () => {
